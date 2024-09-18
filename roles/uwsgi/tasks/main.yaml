@@ -1,0 +1,29 @@
+#- name: Add 'uwsgi' as system user
+#  ansible.builtin.user:
+#    name: uwsgi
+
+#- name: Create directory for 'uwsgi' user
+#  ansible.builtin.file:
+#    path: /opt/agama
+#    owner: agama
+#    state: directory
+
+- name: Install uwsgi from APT
+  ansible.builtin.apt:
+    name: uwsgi
+
+- name: Install uwsgi-plugin-python3 from APT
+  ansible.builtin.apt:
+    name: uwsgi-plugin-python3
+
+- name: uwsgi configuration added to /etc/uwsgi/apps-enabled/agama.ini
+  ansible.builtin.copy:
+    src: agama.ini
+    dest: /etc/uwsgi/apps-enabled/agama.ini
+  notify: Restart Uwsgi
+
+- name: uwsgi service
+  ansible.builtin.service:
+    name: uwsgi
+    state: started
+    enabled: true
