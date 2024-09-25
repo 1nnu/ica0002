@@ -1,0 +1,32 @@
+- name: Install mysql-server from APT
+  ansible.builtin.apt:
+    name: mysql-server
+
+- name: Mysql configuration
+  ansible.builtin.copy:
+    src: override.cnf
+    dest: /etc/mysql/mysql.conf.d/override.cnf
+  notify: Restart Mysql
+
+- name: Check mysql enabled and started
+  ansible.builtin.service:
+    name: mysql
+    state: started
+    enabled: true
+
+- name: Install PyMySql from APT
+  ansible.builtin.apt:
+    name: python3-pymysql
+
+- name: Create database
+  community.mysql.mysql_db:
+    name: "{{ mysql_database }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Create agama as database user
+  community.mysql.mysql_user:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    host: "%"
+    priv: "{{ mysql_database }}.*:ALL"
