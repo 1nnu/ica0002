@@ -1,8 +1,22 @@
 ---
   - name: Initial setup
     hosts: all
+    gather_facts: true
     roles:
       - init
+    tags: i
+
+  - name: Debug
+    hosts: all
+    roles:
+      - debug
+    tags: d
+
+  - name: Dns server
+    hosts: dns_servers
+    roles:
+      - bind
+    tags: dns
   
   - name: Database server
     hosts: db_servers

@@ -1,0 +1,19 @@
+acl allowednets {
+    {% for network in allowed_networks %}
+    {{network}};
+    {% endfor %}
+}
+
+options {
+
+    allow-query {allowednets;};
+
+    directory "/var/cache/bind";
+
+        forwarders {
+        {% for forwarder in dns_forwarders %}
+        {{forwarder}};
+        {% endfor %}
+        };
+    dnssec-validation no;
+};

@@ -1,0 +1,24 @@
+---
+  - name: Install bind
+    ansible.builtin.apt:
+      name: bind9
+
+  - name: Copy bind config
+    ansible.builtin.template:
+      src: bind.{{item}}.j2
+      dest: /etc/bind/{{company_name}}.conf.{{item}}
+    loop:
+      - options
+      - local
+    notify: Restart bind
+  
+  - name: Copy master zone
+    ansible.builtin.template:
+      src: db.{{company_name}}.j2
+      dest: /var/cache/bind/db.{{company_name}}{{root_zone}}
+
+  - name: bind service
+    ansible.builtin.service:
+      name: bind9
+      state: started
+      enabled: true

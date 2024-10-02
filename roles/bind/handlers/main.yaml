@@ -1,5 +1,5 @@
 ---
-  - name: Restart Uwsgi
+  - name: Restart bind
     ansible.builtin.service:
-      name: uwsgi
+      name: bind9
       state: restarted
