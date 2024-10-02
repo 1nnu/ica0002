@@ -1,12 +1,12 @@
 acl allowednets {
-    {% for network in allowed_networks %}
-    {{network}};
-    {% endfor %}
-}
+{% for network in allowed_networks %}
+{{network}};
+{% endfor %}
+};
 
 options {
 
-    allow-query {allowednets;};
+    allow-query { allowednets; };
 
     directory "/var/cache/bind";
 
@@ -15,5 +15,6 @@ options {
         {{forwarder}};
         {% endfor %}
         };
+
     dnssec-validation no;
 };

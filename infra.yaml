@@ -6,11 +6,11 @@
       - init
     tags: i
 
-  - name: Debug
-    hosts: all
-    roles:
-      - debug
-    tags: d
+#  - name: Debug
+#    hosts: all
+#    roles:
+#      - debug
+#    tags: d
 
   - name: Dns server
     hosts: dns_servers

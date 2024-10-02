@@ -2,13 +2,12 @@ company_name: pingix
 root_zone: .ttu
 allowed_networks:
  - 192.168.42.0/23
- - 27.0.0.0/8
+ - 127.0.0.0/8
 dns_forwarders:
  - 1.1.1.1
- - 2.2.2.2
- - 3.3.3.3
+ - 8.8.8.8
 uwsgi_socket: localhost:5000
-mysql_host: 192.168.42.82
+mysql_host: 1nnu-2
 mysql_database: agama
 mysql_user: agama
 mysql_password: !vault |
