@@ -16,12 +16,3 @@
   - name: Update APT cache
     ansible.builtin.apt:
       cache_valid_time: 86400
-  - name: Disable systemd-resolved
-    ansible.builtin.service:
-      name: systemd-resolved
-      state: stopped
-      enabled: false
-  - name: Copy /etc/resolv.conf to hosts
-    ansible.builtin.template:
-      src: resolv.conf.j2
-      dest: /etc/resolv.conf

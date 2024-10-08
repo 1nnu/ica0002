@@ -29,3 +29,8 @@
       - agama
       - uwsgi
       - nginx
+
+  - name: Final setup
+    hosts: all
+    roles:
+      - final
