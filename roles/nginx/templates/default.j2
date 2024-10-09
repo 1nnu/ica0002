@@ -1,9 +1,19 @@
 server {
-	listen 80 default_server;
-	server_name _;
+    listen 80 default_server;
+    server_name _;
+	
+	{% if inventory_hostname in groups['web_servers'] %}
+    location / {
+        uwsgi_pass {{ uwsgi_socket }};
+        include uwsgi_params;
+    }
+	{% endif %}
 
-	location / {
-		uwsgi_pass {{ uwsgi_socket }};
-		include uwsgi_params;
-	}
+    {% if inventory_hostname in groups['prometheus'] %}
+    location /prometheus {
+        {% for vm in groups['prometheus'] %}
+        proxy_pass http://{{ vm }}:9090;
+        {% endfor %}
+    }
+    {% endif %}
 }

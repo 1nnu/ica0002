@@ -1,3 +1,4 @@
 ---
   - debug:
-      msg: This VM IP is {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address']}} 
+      msg: "This VM IP is {{ hostvars[item]['ansible_host'] }}"
+    with_items: "{{ groups['prometheus'][0] }}"

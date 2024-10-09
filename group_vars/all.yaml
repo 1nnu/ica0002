@@ -1,5 +1,6 @@
 company_name: pingix
 root_zone: .ttu
+node_exporter_port: 9100
 allowed_networks:
  - 192.168.42.0/23
  - 127.0.0.0/8
