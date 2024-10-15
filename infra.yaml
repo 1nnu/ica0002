@@ -26,6 +26,7 @@
   - name: Prometheus
     hosts: prometheus
     roles:
+      - nginx
       - prometheus
     tags: prom
   
