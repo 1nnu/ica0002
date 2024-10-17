@@ -6,12 +6,6 @@
       - init
     tags: i
 
-  - name: Debug
-    hosts: all
-    roles:
-      - debug
-    tags: d
-
   - name: Dns server
     hosts: dns_servers
     roles:
@@ -23,17 +17,19 @@
     roles:
       - resolv
 
-  - name: Prometheus
-    hosts: prometheus
+  - name: Prometheus + grafana
+    hosts: prometheus_servers
     roles:
-      - nginx
       - prometheus
+      - grafana
+      - nginx
     tags: prom
   
   - name: Database server
     hosts: db_servers
     roles:
       - mysql
+    tags: mysql
 
   - name: Web server
     hosts: web_servers
@@ -41,3 +37,4 @@
       - agama
       - uwsgi
       - nginx
+    tags: web

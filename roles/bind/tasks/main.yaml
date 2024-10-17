@@ -1,25 +1,68 @@
----
-  - name: Install bind
-    ansible.builtin.apt:
-      name: bind9
+- name: Install bind
+  ansible.builtin.apt:
+    name: bind9
 
-  - name: Copy bind config
-    ansible.builtin.template:
-      src: bind.{{item}}.j2
-      dest: /etc/bind/named.conf.{{item}}
-    loop:
-      - options
-      - local
-    notify: Restart bind
-  
-  - name: Copy master zone
-    ansible.builtin.template:
-      src: db.{{company_name}}{{root_zone}}.j2
-      dest: /var/cache/bind/db.{{company_name}}{{root_zone}}
-    notify: Update bind db
+- name: Copy bind config
+  ansible.builtin.template:
+    src: bind.{{item}}.j2
+    dest: /etc/bind/named.conf.{{item}}
+  loop:
+    - options
+    - local
+  notify: Restart bind
 
-  - name: bind service
-    ansible.builtin.service:
-      name: bind9
-      state: started
-      enabled: true
+- name: Copy master zone
+  ansible.builtin.template:
+    src: db.{{company_name}}{{root_zone}}.j2
+    dest: /var/cache/bind/db.{{company_name}}{{root_zone}}
+  notify: Update bind db
+
+- name: Check if prometheus-bind-exporter exists
+  ansible.builtin.stat:
+    path: /usr/local/bin/prometheus-bind-exporter
+  register: exporter_file
+
+- name: Unarchive bind exporter
+  ansible.builtin.unarchive:
+    src: https://github.com/prometheus-community/bind_exporter/releases/download/v0.6.1/bind_exporter-0.6.1.linux-amd64.tar.gz
+    dest: /usr/local/bin/
+    remote_src: true
+  when: not exporter_file.stat.exists
+
+- name: Extract bind exporter executable
+  ansible.builtin.copy:
+    remote_src: true
+    src: /usr/local/bin/bind_exporter-0.6.1.linux-amd64/bind_exporter
+    dest: /usr/local/bin/prometheus-bind-exporter
+    mode: '0744'
+    owner: prometheus
+  when: not exporter_file.stat.exists
+
+- name: Delete unnecessary folder
+  ansible.builtin.file:
+    path: /usr/local/bin/bind_exporter-0.6.1.linux-amd64
+    state: absent
+  when: not exporter_file.stat.exists
+
+- name: Copy bind exporter service definition
+  ansible.builtin.template:
+    src: prometheus-bind-exporter.service.j2
+    dest: /etc/systemd/system/prometheus-bind-exporter.service
+  when: not exporter_file.stat.exists
+
+- name: Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
+  when: not exporter_file.stat.exists
+
+- name: bind service
+  ansible.builtin.service:
+    name: bind9
+    state: started
+    enabled: true
+
+- name: bind exporter service
+  ansible.builtin.service:
+    name: prometheus-bind-exporter
+    state: started
+    enabled: true

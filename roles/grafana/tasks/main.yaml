@@ -1,0 +1,47 @@
+- name: add grafana gpg key
+  ansible.builtin.apt_key:
+    url: https://packages.grafana.com/gpg.key
+    keyring: /etc/apt/trusted.gpg.d/grafana.gpg
+    state: present
+    
+- name: add grafana repo
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by=/etc/apt/trusted.gpg.d/grafana.gpg] https://apt.grafana.com stable main
+    
+- name: Install grafana
+  ansible.builtin.apt:
+    name: grafana
+ 
+- name: Start and enable grafana
+  ansible.builtin.service:
+    name: grafana-server
+    state: started
+    enabled: yes
+
+- name: Change grafana config
+  ansible.builtin.template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+  notify: restart grafana
+
+
+- name: Copy datasource.yml.j2
+  ansible.builtin.template:
+    src: datasource.yml.j2
+    dest: /etc/grafana/provisioning/datasources/datasource.yml
+  no_log: true
+  notify: restart grafana
+
+- name: Configure dashboards
+  ansible.builtin.copy:
+    src: dashboard.yml
+    dest: /etc/grafana/provisioning/dashboards/dashboard.yml
+  no_log: true
+  notify: restart grafana
+    
+- name: Copy main.json
+  ansible.builtin.copy:
+    src: main.json
+    dest: /etc/grafana/provisioning/dashboards/main.json
+  no_log: true
+  notify: restart grafana

@@ -9,7 +9,7 @@ scrape_configs:
     scrape_interval: 5s
     scrape_timeout: 5s
 
-    metrics_path: '/metrics'
+    metrics_path: 'prometheus/metrics'
     # scheme defaults to 'http'.
 
     static_configs:
@@ -17,8 +17,29 @@ scrape_configs:
 
     
   - job_name: 'linux'
-    scrape_interval: 10s  # Override global scrape interval for this job
+    scrape_interval: 10s
     static_configs:
       - targets: [{%- for vm in groups['all'] -%}
 '{{ vm }}:{{ node_exporter_port }}'{% if not loop.last %},{% endif %}
+{%- endfor -%}]
+
+  - job_name: 'mysql'
+    scrape_interval: 10s
+    static_configs:
+      - targets: [{%- for vm in groups['db_servers'] -%}
+'{{ vm }}:9104'{% if not loop.last %},{% endif %}
+{%- endfor -%}]
+
+  - job_name: 'bind'
+    scrape_interval: 10s
+    static_configs:
+      - targets: [{%- for vm in groups['dns_servers'] -%}
+'{{ vm }}:9119'{% if not loop.last %},{% endif %}
+{%- endfor -%}]
+
+  - job_name: 'nginx'
+    scrape_interval: 10s
+    static_configs:
+      - targets: [{%- for vm in groups['web_servers'] -%}
+'{{ vm }}:9113'{% if not loop.last %},{% endif %}
 {%- endfor -%}]

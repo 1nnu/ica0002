@@ -1,1 +1,1 @@
-ARGS="--web.external-url=http://{{ hostvars[groups['prometheus'][0]]['ansible_host'] }}:{{ hostvars[groups['prometheus'][0]]['ansible_port'] | int + 58 }}/prometheus"
+ARGS="--web.external-url=http://{{ ansible_host }}/prometheus"

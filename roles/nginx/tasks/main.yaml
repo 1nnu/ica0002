@@ -6,10 +6,20 @@
   ansible.builtin.template:
     src: default.j2
     dest: /etc/nginx/sites-enabled/default
-  notify: Restart Nginx
+  notify: restart nginx
 
 - name: nginx service
   ansible.builtin.service:
     name: nginx
+    state: started
+    enabled: true
+
+- name: Install nginx-exporter
+  ansible.builtin.apt:
+    name: prometheus-nginx-exporter
+
+- name: nginx-exporter service
+  ansible.builtin.service:
+    name: prometheus-nginx-exporter
     state: started
     enabled: true
