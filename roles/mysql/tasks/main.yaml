@@ -44,6 +44,9 @@
     no_log: true
     notify: Restart node exporter
 
+  - name: Execute handler early
+    meta: flush_handlers
+
   - name: Check mysql enabled and started
     ansible.builtin.service:
       name: mysql

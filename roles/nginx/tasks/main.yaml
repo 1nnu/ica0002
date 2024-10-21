@@ -6,7 +6,11 @@
   ansible.builtin.template:
     src: default.j2
     dest: /etc/nginx/sites-enabled/default
-  notify: restart nginx
+  notify:
+    - restart nginx
+
+- name: Execute handler early
+  meta: flush_handlers
 
 - name: nginx service
   ansible.builtin.service:
@@ -17,6 +21,8 @@
 - name: Install nginx-exporter
   ansible.builtin.apt:
     name: prometheus-nginx-exporter
+  notify:
+    - restart nginx-exporter
 
 - name: nginx-exporter service
   ansible.builtin.service:
