@@ -24,7 +24,7 @@
         "datasource": {
           "default": true,
           "type": "prometheus",
-          "uid": "ce14z4z59sjr4e"
+          "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
         },
         "fieldConfig": {
           "defaults": {
@@ -106,7 +106,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "ce14z4z59sjr4e"
+              "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
             },
             "editorMode": "code",
             "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / 1024 / 1024",
@@ -124,7 +124,7 @@
         "datasource": {
           "default": true,
           "type": "prometheus",
-          "uid": "ce14z4z59sjr4e"
+          "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
         },
         "fieldConfig": {
           "defaults": {
@@ -191,7 +191,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "ce14z4z59sjr4e"
+              "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
             },
             "editorMode": "code",
             "expr": "nginx_up",
@@ -203,7 +203,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "ce14z4z59sjr4e"
+              "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
             },
             "editorMode": "code",
             "expr": "(nginx_http_requests_total)",
@@ -221,7 +221,7 @@
         "datasource": {
           "default": true,
           "type": "prometheus",
-          "uid": "ce14z4z59sjr4e"
+          "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
         },
         "fieldConfig": {
           "defaults": {
@@ -296,7 +296,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "ce14z4z59sjr4e"
+              "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
             },
             "editorMode": "code",
             "expr": "bind_up",
@@ -308,7 +308,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "ce14z4z59sjr4e"
+              "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
             },
             "editorMode": "code",
             "expr": "sum(bind_resolver_queries_total{instance=\"1nnu-1:9119\", job=\"bind\", view=\"_default\"})",
@@ -326,7 +326,7 @@
         "datasource": {
           "default": true,
           "type": "prometheus",
-          "uid": "ce14z4z59sjr4e"
+          "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
         },
         "fieldConfig": {
           "defaults": {
@@ -393,7 +393,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "ce14z4z59sjr4e"
+              "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
             },
             "editorMode": "code",
             "expr": "mysql_up",
@@ -405,7 +405,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "ce14z4z59sjr4e"
+              "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
             },
             "editorMode": "code",
             "expr": "sum(mysql_global_status_commands_total)",
@@ -423,7 +423,7 @@
         "datasource": {
           "default": true,
           "type": "prometheus",
-          "uid": "ce14z4z59sjr4e"
+          "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
         },
         "fieldConfig": {
           "defaults": {
@@ -503,7 +503,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "ce14z4z59sjr4e"
+              "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
             },
             "disableTextWrap": false,
             "editorMode": "code",
