@@ -43,3 +43,13 @@ grafana_password: !vault |
           36643235306163393063306230656537373861333362656366663432373162383064393437616565
           6237313332376365300a643830646430613834336261363135383733656362633934663937323162
           3461
+
+# AGAMA CLIENT
+
+agama_client_user: agama-client
+agama_client_application: agama-client
+
+# INFLUXDB
+
+influxdb_agama_db_name: agama
+influxdb_port: 8086

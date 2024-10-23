@@ -8,3 +8,21 @@ datasources:
     uid: "b53bd1bd-00b1-413f-97be-6d2bea515633"
     url: http://{{ inventory_hostname }}:9090/prometheus
     isDefault: True
+
+  - name: agama
+    type: influxdb
+    access: proxy
+    orgId: 1
+    uid: "fe1qbl9eorke8b"
+    url: http://localhost:{{ influxdb_port }}
+    isDefault: False
+    database: agama
+    
+  - name: telegraf
+    type: influxdb
+    access: proxy
+    orgId: 1
+    uid: "fe1qqmrkl0rggd"
+    url: http://influxdb:{{ influxdb_port }}
+    isDefault: False
+    database: telegraf

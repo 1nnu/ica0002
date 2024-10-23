@@ -41,6 +41,8 @@
     ansible.builtin.template:
       dest: /var/lib/prometheus/.my.cnf
       src: my.cnf.j2
+      mode: 0400
+      owner: prometheus
     no_log: true
     notify: Restart node exporter
 

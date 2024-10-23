@@ -23,3 +23,16 @@
       name: prometheus-node-exporter
       state: started
       enabled: true
+  - name: Install rsyslog
+    ansible.builtin.apt:
+      name: rsyslog
+  - name: Start and enable rsyslog
+    ansible.builtin.service:
+      name: rsyslog
+      state: started
+      enabled: yes
+  - name: Copy rsyslog config
+    ansible.builtin.template:
+      src: 50-telegraf.conf.j2
+      dest: /etc/rsyslog.d/50-telegraf.conf
+    notify: restart rsyslog

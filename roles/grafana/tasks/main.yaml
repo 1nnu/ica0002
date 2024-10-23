@@ -24,7 +24,6 @@
     dest: /etc/grafana/grafana.ini
   notify: restart grafana
 
-
 - name: Copy datasource.yml.j2
   ansible.builtin.template:
     src: datasource.yml.j2

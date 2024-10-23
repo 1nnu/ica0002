@@ -43,3 +43,10 @@ scrape_configs:
       - targets: [{%- for vm in groups['web_servers'] -%}
 '{{ vm }}:9113'{% if not loop.last %},{% endif %}
 {%- endfor -%}]
+
+  - job_name: 'influxdb'
+    scrape_interval: 10s
+    static_configs:
+      - targets: [{%- for vm in groups['influxdb'] -%}
+'{{ vm }}:9424'{% if not loop.last %},{% endif %}
+{%- endfor -%}]

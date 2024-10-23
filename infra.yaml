@@ -24,6 +24,13 @@
       - grafana
       - nginx
     tags: prom
+
+  - name: InfluxDb
+    hosts: influxdb
+    roles:
+      - influxdb
+      - agama_client
+    tags: influx
   
   - name: Database server
     hosts: db_servers

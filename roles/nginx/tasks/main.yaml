@@ -1,6 +1,8 @@
 - name: Install nginx from APT
   ansible.builtin.apt:
-    name: nginx
+    name:
+      - nginx
+      - prometheus-nginx-exporter
 
 - name: nginx configuration
   ansible.builtin.template:
@@ -8,24 +10,16 @@
     dest: /etc/nginx/sites-enabled/default
   notify:
     - restart nginx
+    - restart nginx-exporter
 
 - name: Execute handler early
   meta: flush_handlers
 
 - name: nginx service
   ansible.builtin.service:
-    name: nginx
+    name: "{{ item }}"
     state: started
     enabled: true
-
-- name: Install nginx-exporter
-  ansible.builtin.apt:
-    name: prometheus-nginx-exporter
-  notify:
-    - restart nginx-exporter
-
-- name: nginx-exporter service
-  ansible.builtin.service:
-    name: prometheus-nginx-exporter
-    state: started
-    enabled: true
+  loop:
+    - nginx
+    - prometheus-nginx-exporter

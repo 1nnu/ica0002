@@ -1,0 +1,4 @@
+- name: restart agama-client
+  ansible.builtin.service:
+    name: agama-client
+    state: restarted
