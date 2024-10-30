@@ -38,9 +38,12 @@
   no_log: true
   notify: restart grafana
     
-- name: Copy main.json
+- name: Copy json files
   ansible.builtin.copy:
-    src: main.json
-    dest: /etc/grafana/provisioning/dashboards/main.json
+    src: "{{ item }}"
+    dest: /etc/grafana/provisioning/dashboards/{{ item }}
   no_log: true
+  loop:
+    - main.json
+    - syslog.json
   notify: restart grafana

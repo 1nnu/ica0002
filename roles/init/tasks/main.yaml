@@ -36,3 +36,15 @@
       src: 50-telegraf.conf.j2
       dest: /etc/rsyslog.d/50-telegraf.conf
     notify: restart rsyslog
+  - name: Create backup user with RSA key
+    ansible.builtin.user:
+      name: backup
+      home: /home/backup
+      generate_ssh_key: true
+      ssh_key_type: rsa
+  - name: Add backup server public key to known hosts
+    ansible.builtin.template:
+      src: known_hosts.j2
+      dest: /home/backup/.ssh/known_hosts
+      group: backup
+      owner: backup
