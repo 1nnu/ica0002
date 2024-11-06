@@ -48,3 +48,12 @@
       dest: /home/backup/.ssh/known_hosts
       group: backup
       owner: backup
+  - name: Create directory restore dir for backup
+    ansible.builtin.file:
+      path: /home/backup/restore
+      owner: backup
+      state: directory
+      mode: "0700"
+  - name: Install duplicity
+    ansible.builtin.apt:
+      name: duplicity

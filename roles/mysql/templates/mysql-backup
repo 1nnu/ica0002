@@ -1,0 +1,2 @@
+18 22 * * * backup mysqldump agama > /home/backup/mysql/agama.sql
+19 22 * * * backup duplicity --no-encryption full /home/backup/mysql/ rsync://{{ github_username }}@backup.{{ company_name }}{{ root_zone }}/mysql

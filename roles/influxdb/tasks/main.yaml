@@ -50,3 +50,15 @@
     state: started
     daemon_reload: true
     enabled: yes
+
+- name: Create directory for influxdb backup
+  ansible.builtin.file:
+    path: /home/backup/influxdb
+    owner: backup
+    state: directory
+    mode: "0400"
+
+- name: Copy cron schedule file
+  ansible.builtin.template:
+    src: influxdb-backup
+    dest: /etc/cron.d/influxdb-backup

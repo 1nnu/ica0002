@@ -1,5 +1,6 @@
 company_name: pingix
 root_zone: .ttu
+github_username: 1nnu
 node_exporter_port: 9100
 backup_server_ip: 192.168.42.132
 backup_server_name: "backup"
