@@ -6,6 +6,7 @@ backup_server_ip: 192.168.42.132
 backup_server_name: "backup"
 backup_server_ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
 grafana_port: 3000
+node_id: "{{ (ansible_port / 100) | int }}"
 allowed_networks:
  - 192.168.42.0/23
  - 127.0.0.0/8
@@ -15,8 +16,8 @@ dns_forwarders:
 uwsgi_socket: localhost:5000
 
 # MYSQL
-
-mysql_host: 1nnu-2
+mysql_backup_host: "{{ groups['db_servers'] | reject('eq', mysql_host) | first | default(mysql_host) }}"
+mysql_host: "{{ groups['db_servers'] | first}}"
 mysql_database: agama
 mysql_user: agama
 mysql_password: !vault |
@@ -37,6 +38,17 @@ mysql_exporter_password: !vault |
           61663733303436383862316439326637626430633165393763313134336465663361643065373533
           3735646339303166330a386633386563616437313165353936323635326536383831383262636264
           33313532323564393433643062616334653661656233643236396639633334343636
+
+
+# MYSQL REPLICATION
+mysql_replication_user: mysql_replication
+mysql_replication_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          34626238306534626639333966656234343362623638646139376136333137643332316563383136
+          6264363866356231303165633362353630353035326631630a653865613731313537623764346133
+          38656134626662383764343162383561633035626235366633343130353332356439316631386436
+          6237633131646166640a623366313734343130636332653466346133643734376636356239663165
+          35316461316635663561356535343965383738386335373664346633333261316531
 
 # GRAFANA
 grafana_user: grafana

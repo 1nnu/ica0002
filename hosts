@@ -2,6 +2,7 @@
 1nnu-2 ansible_host=193.40.156.67 ansible_port=1922 ansible_user=ubuntu
 
 [db_servers]
+1nnu-1
 1nnu-2
 
 [web_servers]

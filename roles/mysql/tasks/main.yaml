@@ -4,8 +4,8 @@
       name: mysql-server
 
   - name: Mysql configuration
-    ansible.builtin.copy:
-      src: override.cnf
+    ansible.builtin.template:
+      src: override.cnf.j2
       dest: /etc/mysql/mysql.conf.d/override.cnf
     notify: Restart Mysql
 
@@ -17,6 +17,9 @@
     community.mysql.mysql_db:
       name: "{{ mysql_database }}"
       login_unix_socket: /var/run/mysqld/mysqld.sock
+    notify:
+      - Reset MySQL source
+      - Reset MySQL replica
 
   - name: Create agama as database user
     community.mysql.mysql_user:
@@ -89,3 +92,22 @@
     ansible.builtin.template:
       src: mysql-backup
       dest: /etc/cron.d/mysql-backup
+
+  - name: MySQL user for replication
+    community.mysql.mysql_user:
+      name: "{{ mysql_replication_user }}"
+      password: "{{ mysql_replication_password }}"
+      host: "%"
+      priv: "*.*:REPLICATION SLAVE"
+      login_unix_socket: /var/run/mysqld/mysqld.sock
+    no_log: true
+
+  - name: MySQL read only mode
+    community.mysql.mysql_variables:
+      variable: read_only
+      value: "{{ 'OFF' if inventory_hostname == mysql_host else 'ON' }}"
+      mode: persist
+      login_unix_socket: /var/run/mysqld/mysqld.sock
+    notify:
+      - Reset MySQL source
+      - Reset MySQL replica
