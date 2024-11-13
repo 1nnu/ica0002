@@ -10,7 +10,7 @@
   ansible.builtin.copy:
     src: agama-client
     dest: /usr/local/bin/agama-client
-    mode: '0744'
+    mode: 0744
     owner: agama-client
 
 - name: copy service definition to /etc/systemd/system/

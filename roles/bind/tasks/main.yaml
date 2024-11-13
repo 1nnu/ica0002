@@ -34,7 +34,7 @@
     remote_src: true
     src: /usr/local/bin/bind_exporter-0.6.1.linux-amd64/bind_exporter
     dest: /usr/local/bin/prometheus-bind-exporter
-    mode: '0744'
+    mode: 0744
     owner: prometheus
   when: not exporter_file.stat.exists
 

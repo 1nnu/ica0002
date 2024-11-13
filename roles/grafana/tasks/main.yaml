@@ -46,4 +46,5 @@
   loop:
     - main.json
     - syslog.json
+    - backups.json
   notify: restart grafana
