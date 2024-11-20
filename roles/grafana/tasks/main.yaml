@@ -1,51 +1,47 @@
-- name: add grafana gpg key
-  ansible.builtin.apt_key:
-    url: https://packages.grafana.com/gpg.key
-    keyring: /etc/apt/trusted.gpg.d/grafana.gpg
-    state: present
-    
-- name: add grafana repo
-  ansible.builtin.apt_repository:
-    repo: deb [signed-by=/etc/apt/trusted.gpg.d/grafana.gpg] https://apt.grafana.com stable main
-    
-- name: Install grafana
-  ansible.builtin.apt:
-    name: grafana
- 
-- name: Start and enable grafana
-  ansible.builtin.service:
-    name: grafana-server
-    state: started
-    enabled: yes
+- name: Grafana directory
+  ansible.builtin.file:
+    name: "{{ item }}"
+    state: directory
+  loop:
+    - /opt/grafana/provisioning/dashboards
+    - /opt/grafana/provisioning/datasources
 
-- name: Change grafana config
+- name: Grafana configuration
   ansible.builtin.template:
     src: grafana.ini.j2
-    dest: /etc/grafana/grafana.ini
-  notify: restart grafana
+    dest: /opt/grafana/grafana.ini
+  no_log: true
+  notify: Restart Grafana
 
 - name: Copy datasource.yml.j2
   ansible.builtin.template:
     src: datasource.yml.j2
-    dest: /etc/grafana/provisioning/datasources/datasource.yml
+    dest: /opt/grafana/provisioning/datasources/datasource.yml
   no_log: true
-  notify: restart grafana
+  notify: Restart Grafana
 
 - name: Configure dashboards
   ansible.builtin.copy:
-    src: dashboard.yml
-    dest: /etc/grafana/provisioning/dashboards/dashboard.yml
-  no_log: true
-  notify: restart grafana
-    
-- name: Copy json files
-  ansible.builtin.copy:
     src: "{{ item }}"
-    dest: /etc/grafana/provisioning/dashboards/{{ item }}
-  no_log: true
+    dest: "/opt/grafana/provisioning/dashboards/{{item}}"
   loop:
-    - main.json
-    - syslog.json
-    - backups.json
-    - mysql.json
-  notify: restart grafana
+  - dashboard.yml
+  - main.json
+  - syslog.json
+  - backups.json
+  - mysql.json
+  no_log: true
+  notify: Restart Grafana
+
+- name: Change grafana config
+  ansible.builtin.template:
+    src: grafana.ini.j2
+    dest: /opt/grafana/grafana.ini
+  notify: Restart Grafana
+
+- name: Grafana Docker container
+  community.docker.docker_container:
+    image: grafana/grafana
+    name: grafana
+    published_ports: "{{ grafana_port }}:3000"
+    volumes: /opt/grafana:/etc/grafana

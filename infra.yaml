@@ -17,6 +17,12 @@
     roles:
       - resolv
 
+  - name: Docker
+    hosts: all
+    roles:
+      - docker
+    tags: docker
+
   - name: Prometheus + grafana
     hosts: prometheus_servers
     roles:
