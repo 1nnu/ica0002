@@ -7,7 +7,7 @@
     ansible.builtin.template:
       src: override.cnf.j2
       dest: /etc/mysql/mysql.conf.d/override.cnf
-    notify: Restart Mysql
+    notify: Restart MySQL
 
   - name: Install PyMySql from APT
     ansible.builtin.apt:

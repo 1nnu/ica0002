@@ -7,9 +7,9 @@ $TTL	604800
 			 604800 )	; Negative Cache TTL
 ;
 {% for vm in groups['dns_servers'] %}
-{{company_name}}{{root_zone}}.  IN  NS  {{vm}}
+{{company_name}}{{root_zone}}.  IN  NS  {{vm}};
 {% endfor %}
 {% for vm in groups['all'] %}
-{{vm}}  IN  A   {{hostvars[vm]['ansible_default_ipv4']['address']}}
+{{vm}}  IN  A   {{hostvars[vm]['ansible_default_ipv4']['address']}};
 {% endfor %}
-{{ backup_server_name }}	IN	A	{{ backup_server_ip }}
+{{ backup_server_name }}	IN	A	{{ backup_server_ip }};

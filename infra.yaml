@@ -48,6 +48,5 @@
     hosts: web_servers
     roles:
       - agama
-      - uwsgi
       - nginx
     tags: web

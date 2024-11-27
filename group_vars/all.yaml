@@ -9,9 +9,11 @@ node_id: "{{ (ansible_port / 100) | int }}"
 allowed_networks:
  - 192.168.42.0/23
  - 127.0.0.0/8
+ - 172.17.0.0/16
 dns_forwarders:
  - 1.1.1.1
  - 8.8.8.8
+ - 9.9.9.9
 uwsgi_socket: localhost:5000
 
 # MYSQL

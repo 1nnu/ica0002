@@ -3,17 +3,15 @@
     path: /opt/agama
     state: directory
 
-- name: Install agama application
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/hudolejev/agama/master/agama.py
-    dest: /opt/agama/agama.py
-
 - name: Download agama dockerfile
   ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/hudolejev/agama/refs/heads/master/Dockerfile
-    dest: /opt/agama/Dockerfile
+    url: https://raw.githubusercontent.com/hudolejev/agama/master/{{ item }}
+    dest: /opt/agama
+  loop:
+    - agama.py
+    - Dockerfile
 
-- name: Build docker image
+- name: Build agama image
   community.docker.docker_image:
     name: agama
     source: build
