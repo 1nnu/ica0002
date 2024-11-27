@@ -72,3 +72,9 @@ agama_port: 8001
 
 influxdb_agama_db_name: agama
 influxdb_port: 8086
+
+# AGAMA APPLICATION
+
+agama_docker_containers:
+  agama1: 8001
+  agama2: 8002

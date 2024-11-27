@@ -50,3 +50,9 @@
       - agama
       - nginx
     tags: web
+
+  - name: Keepalive and HAproxy
+    hosts: web_servers
+    roles:
+      - keepalived
+    tags: keep
