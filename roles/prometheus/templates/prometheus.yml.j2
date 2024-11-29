@@ -56,4 +56,17 @@ scrape_configs:
     static_configs:
       - targets:
           - {{ backup_server_name }}.{{ company_name }}{{ root_zone }}:9111
+  
+  - job_name: 'keepalived'
+    scrape_interval: 10s
+    static_configs:
+      - targets: [{%- for vm in groups['web_servers'] -%}
+'{{ vm }}:9165'{% if not loop.last %},{% endif %}
+{%- endfor -%}]
 
+  - job_name: 'haproxy'
+    scrape_interval: 10s
+    static_configs:
+      - targets: [{%- for vm in groups['web_servers'] -%}
+'{{ vm }}:9101'{% if not loop.last %},{% endif %}
+{%- endfor -%}]

@@ -49,7 +49,7 @@
     name: prometheus-influxdb-stats-exporter
     state: started
     daemon_reload: true
-    enabled: yes
+    enabled: true
 
 - name: Create directory for influxdb backup
   ansible.builtin.file:

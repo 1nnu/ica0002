@@ -30,7 +30,7 @@
     ansible.builtin.service:
       name: rsyslog
       state: started
-      enabled: yes
+      enabled: true
   - name: Copy rsyslog config
     ansible.builtin.template:
       src: 50-telegraf.conf.j2

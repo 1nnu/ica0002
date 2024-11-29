@@ -78,3 +78,7 @@ influxdb_port: 8086
 agama_docker_containers:
   agama1: 8001
   agama2: 8002
+
+# HAPROXY
+
+haproxy_stats_port: 9188

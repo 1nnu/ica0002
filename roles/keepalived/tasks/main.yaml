@@ -27,4 +27,20 @@
   ansible.builtin.service:
     name: keepalived
     state: started
+    enabled: true
+
+- name: Download keepalived exporter
+  ansible.builtin.apt:
+    deb: http://backup/keepalived-exporter_1.4.0_linux_amd64.deb
+    
+- name: Copy keepalived exporter service file
+  ansible.builtin.copy:
+    src: keepalived_exporter.service
+    dest: /etc/systemd/system/keepalived_exporter.service
+
+- name: Start and enable keepalived exporter
+  ansible.builtin.service:
+    name: keepalived_exporter
+    state: started
+    daemon_reload: true
     enabled: yes

@@ -16,7 +16,7 @@
   ansible.builtin.service:
     name: grafana-server
     state: started
-    enabled: yes
+    enabled: true
 
 - name: Change grafana config
   ansible.builtin.template:

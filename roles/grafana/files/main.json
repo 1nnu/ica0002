@@ -23,6 +23,7 @@
   "panels": [
     {
       "datasource": {
+        "type": "prometheus",
         "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
       },
       "fieldConfig": {
@@ -53,11 +54,42 @@
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "index": 1,
+                        "text": "MASTER"
+                      },
+                      "2": {
+                        "index": 0,
+                        "text": "SLAVE"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -65,7 +97,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 8,
+      "id": 10,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -83,30 +115,41 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
-          "editorMode": "code",
-          "expr": "(influxdb_exporter_stats_query_success)",
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A"
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "keepalived_up",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "{{instance}} Keepalived",
+          "range": false,
+          "refId": "A",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
             "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
           },
-          "editorMode": "code",
-          "expr": "(influxdb_write_write_ok)",
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "keepalived_vrrp_state",
+          "fullMetaSearch": false,
           "hide": false,
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "B"
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "{{instance}} VRRP",
+          "range": false,
+          "refId": "B",
+          "useBackend": false
         }
       ],
-      "title": "InfluxDB status",
+      "title": "Keepalived states",
       "type": "stat"
     },
     {
@@ -175,7 +218,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -208,15 +251,34 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "fe1qbl9eorke8b"
+        "type": "prometheus",
+        "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "DOWN"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "UP"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "max": 1,
+          "min": 0,
+          "noValue": "null",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -239,7 +301,7 @@
         "x": 0,
         "y": 8
       },
-      "id": 7,
+      "id": 9,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -254,24 +316,50 @@
           "values": false
         },
         "showPercentChange": false,
-        "textMode": "auto",
+        "text": {
+          "titleSize": 19
+        },
+        "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "fe1qbl9eorke8b"
-          },
-          "hide": false,
-          "query": "SELECT \"items\" FROM \"agama-stats\" WHERE \"name\" = '1nnu-1'",
-          "rawQuery": true,
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "haproxy_up",
+          "format": "time_series",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "interval": "",
+          "legendFormat": "{{instance}} HaProxy",
+          "range": false,
           "refId": "A",
-          "resultFormat": "time_series"
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "haproxy_server_up",
+          "format": "time_series",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "{{instance}} Docker",
+          "range": false,
+          "refId": "B",
+          "useBackend": false
         }
       ],
-      "title": "My Agama entries",
+      "title": "HaProxy",
       "type": "stat"
     },
     {
@@ -340,7 +428,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -373,46 +461,41 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "fe1qbl9eorke8b"
+        "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "DOWN"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "UP"
+                }
+              },
+              "type": "value"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
         },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "agama-stats.count"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": []
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -420,7 +503,7 @@
         "x": 0,
         "y": 16
       },
-      "id": 6,
+      "id": 8,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -438,38 +521,30 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
+          "editorMode": "code",
+          "expr": "(influxdb_exporter_stats_query_success)",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        },
+        {
           "datasource": {
-            "type": "influxdb",
-            "uid": "fe1qbl9eorke8b"
+            "type": "prometheus",
+            "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
           },
-          "groupBy": [],
+          "editorMode": "code",
+          "expr": "(influxdb_write_write_ok)",
           "hide": false,
-          "measurement": "agama-stats",
-          "orderByTime": "DESC",
-          "policy": "default",
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "items"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "count"
-              }
-            ]
-          ],
-          "tags": []
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "B"
         }
       ],
-      "title": "Discovered Agamas",
+      "title": "InfluxDB status",
       "type": "stat"
     },
     {
@@ -546,7 +621,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -579,47 +654,13 @@
     },
     {
       "datasource": {
-        "default": true,
-        "type": "prometheus",
-        "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
+        "type": "influxdb",
+        "uid": "fe1qbl9eorke8b"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
@@ -634,8 +675,7 @@
                 "value": 80
               }
             ]
-          },
-          "unit": "decmbytes"
+          }
         },
         "overrides": []
       },
@@ -645,38 +685,40 @@
         "x": 0,
         "y": 24
       },
-      "id": 4,
+      "id": 7,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true,
-          "width": -1
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
+            "type": "influxdb",
+            "uid": "fe1qbl9eorke8b"
           },
-          "editorMode": "code",
-          "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / 1024 / 1024",
-          "instant": false,
-          "interval": "",
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A"
+          "hide": false,
+          "query": "SELECT \"items\" FROM \"agama-stats\" WHERE \"name\" = '1nnu-1'",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series"
         }
       ],
-      "title": "Memory consumption",
-      "type": "timeseries"
+      "title": "My Agama entries",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -758,7 +800,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "datasource": {
@@ -779,6 +821,208 @@
       ],
       "title": "CPU util",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "fe1qbl9eorke8b"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "agama-stats.count"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "fe1qbl9eorke8b"
+          },
+          "groupBy": [],
+          "hide": false,
+          "measurement": "agama-stats",
+          "orderByTime": "DESC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "items"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Discovered Agamas",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "default": true,
+        "type": "prometheus",
+        "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decmbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 32
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "width": -1
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "b53bd1bd-00b1-413f-97be-6d2bea515633"
+          },
+          "editorMode": "code",
+          "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / 1024 / 1024",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Memory consumption",
+      "type": "timeseries"
     }
   ],
   "preload": false,
@@ -789,13 +1033,13 @@
     "list": []
   },
   "time": {
-    "from": "2024-10-23T16:02:55.243Z",
-    "to": "2024-10-23T16:04:47.111Z"
+    "from": "2024-11-29T08:05:14.778Z",
+    "to": "2024-11-29T08:08:08.208Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Main",
   "uid": "be1ps6tqvgwlcf",
-  "version": 12,
+  "version": 8,
   "weekStart": ""
 }
