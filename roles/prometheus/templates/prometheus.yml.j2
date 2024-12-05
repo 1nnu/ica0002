@@ -27,28 +27,28 @@ scrape_configs:
     scrape_interval: 10s
     static_configs:
       - targets: [{%- for vm in groups['db_servers'] -%}
-'{{ vm }}:9104'{% if not loop.last %},{% endif %}
+'db-{{ vm[-1] }}:9104'{% if not loop.last %},{% endif %}
 {%- endfor -%}]
 
   - job_name: 'bind'
     scrape_interval: 10s
     static_configs:
       - targets: [{%- for vm in groups['dns_servers'] -%}
-'{{ vm }}:9119'{% if not loop.last %},{% endif %}
+'ns-{{ vm[-1] }}:9119'{% if not loop.last %},{% endif %}
 {%- endfor -%}]
 
   - job_name: 'nginx'
     scrape_interval: 10s
     static_configs:
       - targets: [{%- for vm in groups['web_servers'] -%}
-'{{ vm }}:9113'{% if not loop.last %},{% endif %}
+'web-{{ vm[-1] }}:9113'{% if not loop.last %},{% endif %}
 {%- endfor -%}]
 
   - job_name: 'influxdb'
     scrape_interval: 10s
     static_configs:
       - targets: [{%- for vm in groups['influxdb'] -%}
-'{{ vm }}:9424'{% if not loop.last %},{% endif %}
+'influxdb{{ vm[-1] if groups['prometheus_servers']|length - 1 else None }}:9424'{% if not loop.last %},{% endif %}
 {%- endfor -%}]
 
   - job_name: 'backup'
@@ -61,12 +61,12 @@ scrape_configs:
     scrape_interval: 10s
     static_configs:
       - targets: [{%- for vm in groups['web_servers'] -%}
-'{{ vm }}:9165'{% if not loop.last %},{% endif %}
+'lb-{{ vm[-1] }}:9165'{% if not loop.last %},{% endif %}
 {%- endfor -%}]
 
   - job_name: 'haproxy'
     scrape_interval: 10s
     static_configs:
       - targets: [{%- for vm in groups['web_servers'] -%}
-'{{ vm }}:9101'{% if not loop.last %},{% endif %}
+'lb-{{ vm[-1] }}:9101'{% if not loop.last %},{% endif %}
 {%- endfor -%}]

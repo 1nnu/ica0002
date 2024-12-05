@@ -29,3 +29,15 @@
     name: prometheus-haproxy-exporter
     state: started
     enabled: true
+
+- name: Add haproxy CNAME records
+  community.general.nsupdate:
+    key_name: "nsupdate.key"
+    key_secret: "{{ dns_nsupdate_key }}"
+    key_algorithm: "hmac-sha256"
+    zone: "{{ company_name }}{{root_zone}}"
+    server: "{{ hostvars[groups['dns_primary'][0]]['ansible_default_ipv4']['address'] }}"
+    record: "lb-{{ inventory_hostname[-1] if groups['web_servers']|length - 1 else None }}"
+    value: "{{ inventory_hostname }}"
+    type: "CNAME"
+  no_log: true

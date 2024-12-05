@@ -1,4 +1,41 @@
-zone "{{company_name}}{{root_zone}}." {
+zone "{{ domain }}" {
+    {% if inventory_hostname in groups['dns_primary'] %}
     type primary;
-    file "db.{{company_name}}{{root_zone}}";
+    allow-transfer { 127.0.0.1; key transfer.key;};
+    allow-update { key nsupdate.key;};
+    {% else %}
+    type secondary;
+    allow-transfer { 127.0.0.1; };
+    primaries {
+        {% for vm in groups['dns_primary'] %}
+        {{ hostvars[vm]['ansible_default_ipv4']['address'] }};
+        {% endfor %}
+    };
+    {% endif %}
+    file "db.{{ company_name }}{{ root_zone }}";
 };
+
+zone "168.192.in-addr.arpa" {
+    file "db.{{ company_name }}{{ root_zone }}.reverse";
+    {% if inventory_hostname in groups['dns_primary']%}
+    type primary;
+    allow-transfer { 127.0.0.1; key transfer.key;};
+    allow-update { key nsupdate.key;};
+    {% else %}
+    type secondary;
+    allow-transfer { 127.0.0.1; };
+    primaries {
+        {% for vm in groups['dns_primary'] %}
+        {{ hostvars[vm]['ansible_default_ipv4']['address'] }};
+        {% endfor %}
+    };
+    {% endif %}
+};
+
+{% if inventory_hostname in groups['dns_secondary']%}
+{% for vm in groups['dns_primary']%}
+server {{ hostvars[vm]['ansible_default_ipv4']['address'] }} {
+    keys {transfer.key;};
+};
+{% endfor %}
+{% endif %}

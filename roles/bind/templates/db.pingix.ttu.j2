@@ -1,5 +1,5 @@
 $TTL	604800
-{{company_name}}{{root_zone}}.	IN	SOA	ns.{{company_name}}{{root_zone}}. mail.{{company_name}}{{root_zone}}. (
+{{domain}}.	IN	SOA	ns.{{domain}}. mail.{{domain}}. (
 			      2		; Serial
 			 604800		; Refresh
 			  86400		; Retry
@@ -7,9 +7,8 @@ $TTL	604800
 			 604800 )	; Negative Cache TTL
 ;
 {% for vm in groups['dns_servers'] %}
-{{company_name}}{{root_zone}}.  IN  NS  {{vm}};
+{{domain}}.  IN  NS  {{vm}};
 {% endfor %}
 {% for vm in groups['all'] %}
 {{vm}}  IN  A   {{hostvars[vm]['ansible_default_ipv4']['address']}};
 {% endfor %}
-{{ backup_server_name }}	IN	A	{{ backup_server_ip }};

@@ -1,6 +1,10 @@
-- name: Install bind
+- name: Install Bind9
   ansible.builtin.apt:
     name: bind9
+
+- name: Install dnspython
+  ansible.builtin.apt:
+    name: python3-dnspython
 
 - name: Copy bind config
   ansible.builtin.template:
@@ -10,59 +14,76 @@
     - options
     - local
   notify: Restart bind
+  no_log: true
 
 - name: Copy master zone
   ansible.builtin.template:
-    src: db.{{company_name}}{{root_zone}}.j2
-    dest: /var/cache/bind/db.{{company_name}}{{root_zone}}
+    src: db.{{item}}.j2
+    dest: /var/cache/bind/db.{{item}}
+  loop:
+    - "{{company_name}}{{root_zone}}"
+    - "{{company_name}}{{root_zone}}.reverse"
   notify: Update bind db
+  no_log: true
 
-- name: Check if prometheus-bind-exporter exists
-  ansible.builtin.stat:
-    path: /usr/local/bin/prometheus-bind-exporter
-  register: exporter_file
+- name: execute handlers
+  meta: flush_handlers
 
 - name: Unarchive bind exporter
   ansible.builtin.unarchive:
     src: https://github.com/prometheus-community/bind_exporter/releases/download/v0.6.1/bind_exporter-0.6.1.linux-amd64.tar.gz
-    dest: /usr/local/bin/
+    dest: /opt
     remote_src: true
-  when: not exporter_file.stat.exists
 
-- name: Extract bind exporter executable
-  ansible.builtin.copy:
-    remote_src: true
-    src: /usr/local/bin/bind_exporter-0.6.1.linux-amd64/bind_exporter
-    dest: /usr/local/bin/prometheus-bind-exporter
-    mode: 0744
-    owner: prometheus
-  when: not exporter_file.stat.exists
-
-- name: Delete unnecessary folder
+- name: link file
   ansible.builtin.file:
-    path: /usr/local/bin/bind_exporter-0.6.1.linux-amd64
-    state: absent
-  when: not exporter_file.stat.exists
+    src: /opt/bind_exporter-0.6.1.linux-amd64/bind_exporter
+    dest: /usr/local/bin/prometheus-bind-exporter
+    state: link
 
 - name: Copy bind exporter service definition
   ansible.builtin.template:
     src: prometheus-bind-exporter.service.j2
     dest: /etc/systemd/system/prometheus-bind-exporter.service
-  when: not exporter_file.stat.exists
 
 - name: Reload systemd
   ansible.builtin.systemd:
     daemon_reload: true
-  when: not exporter_file.stat.exists
+
+- name: Add backup server A records
+  when: inventory_hostname in groups['dns_primary']
+  community.general.nsupdate:
+    key_name: "nsupdate.key"
+    key_secret: "{{ dns_nsupdate_key }}"
+    key_algorithm: "hmac-sha256"
+    zone: "{{ company_name }}{{root_zone}}"
+    server: "127.0.0.1" # Almost pulled my hair out because 'localhost' is not a valid arg
+    record: "{{ item.key }}"
+    value: "{{ item.value }}"
+    type: "A"
+  loop: "{{ dns_a_records | dict2items }}"
+  notify: Restart bind
+  no_log: true
+
+- name: Add backup server CNAME records
+  when: inventory_hostname in groups['dns_primary']
+  community.general.nsupdate:
+    key_name: "nsupdate.key"
+    key_secret: "{{ dns_nsupdate_key }}"
+    key_algorithm: "hmac-sha256"
+    zone: "{{ company_name }}{{root_zone}}"
+    server: "127.0.0.1"
+    record: "ns-{{ item[-1] if groups['dns_servers']|length - 1 else None }}"
+    value: "{{ item }}"
+    type: "CNAME"
+  loop: "{{ groups['dns_servers'] }}"
+  no_log: true
 
 - name: bind service
   ansible.builtin.service:
-    name: bind9
+    name: "{{ item }}"
     state: started
     enabled: true
-
-- name: bind exporter service
-  ansible.builtin.service:
-    name: prometheus-bind-exporter
-    state: started
-    enabled: true
+  loop:
+    - bind9
+    - prometheus-bind-exporter
