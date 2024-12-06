@@ -1,2 +1,2 @@
-18 22 * * * backup rm -rf /home/backup/influxdb/*; influxd backup -portable -db telegraf /home/backup/influxdb
+18 22 * * * backup rm -rf /home/backup/influxdb/*; influxd backup -portable -database telegraf /home/backup/influxdb
 19 22 * * * backup duplicity --no-encryption full /home/backup/influxdb/ rsync://{{ github_username }}@backup.{{ company_name }}{{ root_zone }}/influxdb

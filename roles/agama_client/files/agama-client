@@ -31,6 +31,11 @@ while true; do
         vm_name=$(echo "$content" | grep "running on" | awk '{print $5}')
         # Number of items in agama
         table_rows=$(echo "$content" | grep -c "</tr>")
+        ptr=$(host -W1 $vm_ip $vm_ip | awk '/domain name pointer/ {print $5}')
+        if ! [ -z "$ptr" ]; then
+            logger "Resolved $vm_ip to $ptr"
+            vm_name="$ptr"
+        fi
         # Write stats to inflixdb
         curl -i -XPOST "${db_url}/write?db=$db_name" --data-binary "agama-stats,name=$vm_name items=$table_rows" 1>/dev/null 2>/dev/null
         # If hostname exists in agama - delete it

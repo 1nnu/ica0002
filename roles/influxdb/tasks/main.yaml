@@ -28,8 +28,8 @@
     name: telegraf
 
 - name: Copy telegraf conf
-  ansible.builtin.template:
-    src: telegraf.conf.2
+  ansible.builtin.copy:
+    src: telegraf.conf
     dest: /etc/telegraf/telegraf.conf
   notify: restart telegraf
 

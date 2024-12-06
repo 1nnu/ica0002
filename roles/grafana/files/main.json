@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 4,
   "links": [],
   "panels": [
     {
@@ -115,7 +115,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "disableTextWrap": false,
@@ -218,7 +218,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -322,7 +322,7 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "disableTextWrap": false,
@@ -428,7 +428,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -521,7 +521,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "editorMode": "code",
@@ -621,7 +621,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -703,7 +703,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -711,7 +711,7 @@
             "uid": "fe1qbl9eorke8b"
           },
           "hide": false,
-          "query": "SELECT \"items\" FROM \"agama-stats\" WHERE \"name\" = '1nnu-1'",
+          "query": "SELECT \"items\" FROM \"agama-stats\" WHERE \"name\" =~ /^1nnu.*/",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -800,7 +800,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -889,7 +889,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -1005,7 +1005,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -1033,13 +1033,13 @@
     "list": []
   },
   "time": {
-    "from": "2024-11-29T08:05:14.778Z",
-    "to": "2024-11-29T08:08:08.208Z"
+    "from": "now-5m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Main",
   "uid": "be1ps6tqvgwlcf",
-  "version": 8,
+  "version": 3,
   "weekStart": ""
 }
