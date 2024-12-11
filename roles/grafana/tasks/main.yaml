@@ -51,7 +51,7 @@
     key_name: "nsupdate.key"
     key_secret: "{{ dns_nsupdate_key }}"
     key_algorithm: "hmac-sha256"
-    zone: "{{ company_name }}{{root_zone}}"
+    zone: "{{ domain }}"
     server: "{{ hostvars[groups['dns_primary'][0]]['ansible_default_ipv4']['address'] }}"
     record: "grafana{{ inventory_hostname[-1] if groups['prometheus_servers']|length - 1 else None }}"
     value: "{{ inventory_hostname }}"

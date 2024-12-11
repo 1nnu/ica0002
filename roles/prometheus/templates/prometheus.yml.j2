@@ -55,7 +55,7 @@ scrape_configs:
     scrape_interval: 10s
     static_configs:
       - targets:
-          - {{ backup_server_name }}.{{ company_name }}{{ root_zone }}:9111
+          - {{ backup_server_name }}.{{ domain }}:9111
   
   - job_name: 'keepalived'
     scrape_interval: 10s

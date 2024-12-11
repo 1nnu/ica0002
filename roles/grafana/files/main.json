@@ -228,7 +228,7 @@
           "editorMode": "code",
           "expr": "nginx_up",
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "{{instance}}",
           "range": true,
           "refId": "A"
         },
@@ -241,7 +241,7 @@
           "expr": "(nginx_http_requests_total)",
           "hide": false,
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "{{__name__}}",
           "range": true,
           "refId": "B"
         }
@@ -353,7 +353,7 @@
           "hide": false,
           "includeNullMetadata": true,
           "instant": true,
-          "legendFormat": "{{instance}} Docker",
+          "legendFormat": "{{instance}} {{server}}",
           "range": false,
           "refId": "B",
           "useBackend": false
@@ -438,7 +438,7 @@
           "editorMode": "code",
           "expr": "mysql_up",
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "{{instance}}",
           "range": true,
           "refId": "A"
         },
@@ -526,7 +526,7 @@
         {
           "editorMode": "code",
           "expr": "(influxdb_exporter_stats_query_success)",
-          "legendFormat": "__auto",
+          "legendFormat": "{{instance}}",
           "range": true,
           "refId": "A"
         },
@@ -539,7 +539,7 @@
           "expr": "(influxdb_write_write_ok)",
           "hide": false,
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "{{__name__}}",
           "range": true,
           "refId": "B"
         }
@@ -631,7 +631,7 @@
           "editorMode": "code",
           "expr": "bind_up",
           "instant": false,
-          "legendFormat": "__auto",
+          "legendFormat": "{{instance}}",
           "range": true,
           "refId": "A"
         },
@@ -1040,6 +1040,6 @@
   "timezone": "browser",
   "title": "Main",
   "uid": "be1ps6tqvgwlcf",
-  "version": 3,
+  "version": 6,
   "weekStart": ""
 }

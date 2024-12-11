@@ -22,8 +22,8 @@
     dest: /var/cache/bind/db.{{item}}
     force: false
   loop:
-    - "{{company_name}}{{root_zone}}"
-    - "{{company_name}}{{root_zone}}.reverse"
+    - "{{ domain }}"
+    - "{{ domain }}.reverse"
   notify: Update bind db
   no_log: true
 
@@ -50,6 +50,15 @@
 - name: Reload systemd
   ansible.builtin.systemd:
     daemon_reload: true
+  
+- name: bind service
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop:
+    - bind9
+    - prometheus-bind-exporter
 
 - name: Add backup server A records
   when: inventory_hostname in groups['dns_primary']
@@ -57,7 +66,7 @@
     key_name: "nsupdate.key"
     key_secret: "{{ dns_nsupdate_key }}"
     key_algorithm: "hmac-sha256"
-    zone: "{{ company_name }}{{root_zone}}"
+    zone: "{{ domain }}"
     server: "127.0.0.1" # Almost pulled my hair out because 'localhost' is not a valid arg
     record: "{{ item.key }}"
     value: "{{ item.value }}"
@@ -72,19 +81,10 @@
     key_name: "nsupdate.key"
     key_secret: "{{ dns_nsupdate_key }}"
     key_algorithm: "hmac-sha256"
-    zone: "{{ company_name }}{{root_zone}}"
+    zone: "{{ domain }}"
     server: "127.0.0.1"
     record: "ns-{{ item[-1] if groups['dns_servers']|length - 1 else None }}"
     value: "{{ item }}"
     type: "CNAME"
   loop: "{{ groups['dns_servers'] }}"
   no_log: true
-
-- name: bind service
-  ansible.builtin.service:
-    name: "{{ item }}"
-    state: started
-    enabled: true
-  loop:
-    - bind9
-    - prometheus-bind-exporter

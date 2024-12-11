@@ -1,5 +1,6 @@
-1nnu-1 ansible_host=193.40.156.67 ansible_port=38222 ansible_user=ubuntu
-1nnu-2 ansible_host=193.40.156.67 ansible_port=39222 ansible_user=ubuntu
+1nnu-1 ansible_host=193.40.156.67 ansible_port=10922 ansible_user=ubuntu
+1nnu-2 ansible_host=193.40.156.67 ansible_port=17822 ansible_user=ubuntu
+1nnu-3 ansible_host=193.40.156.67 ansible_port=9822 ansible_user=ubuntu
 
 [db_servers]
 1nnu-1
@@ -14,13 +15,14 @@ dns_primary
 dns_secondary
 
 [dns_primary]
-1nnu-1
+1nnu-3
 
 [dns_secondary]
+1nnu-1
 1nnu-2
 
 [prometheus_servers]
-1nnu-2
+1nnu-3
 
 [influxdb]
-1nnu-2
+1nnu-3

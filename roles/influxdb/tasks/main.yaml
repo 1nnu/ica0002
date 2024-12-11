@@ -33,6 +33,12 @@
     dest: /etc/telegraf/telegraf.conf
   notify: restart telegraf
 
+- name: telegraf
+  ansible.builtin.service:
+    name: telegraf
+    state: started
+    enabled: true
+
 - name: Download Influxdb exporter
   ansible.builtin.get_url:
     url: https://github.com/carlpett/influxdb_stats_exporter/releases/download/v0.1.1/influx_stats_exporter_linux_amd64
@@ -62,13 +68,14 @@
   ansible.builtin.template:
     src: influxdb-backup
     dest: /etc/cron.d/influxdb-backup
-
+  notify: restart cron
+  
 - name: Add influxdb CNAME records
   community.general.nsupdate:
     key_name: "nsupdate.key"
     key_secret: "{{ dns_nsupdate_key }}"
     key_algorithm: "hmac-sha256"
-    zone: "{{ company_name }}{{root_zone}}"
+    zone: "{{ domain }}"
     server: "{{ hostvars[groups['dns_primary'][0]]['ansible_default_ipv4']['address'] }}"
     record: "influxdb{{ inventory_hostname[-1] if groups['prometheus_servers']|length - 1 else None }}"
     value: "{{ inventory_hostname }}"

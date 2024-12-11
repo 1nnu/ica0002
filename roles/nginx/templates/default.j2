@@ -29,3 +29,12 @@ server {
 	}
 }
 {% endif %}
+
+{% if inventory_hostname in groups['prometheus_servers'] %}
+server {
+	listen 8080 default_server;
+	location /stub_status {
+		stub_status;
+	}
+}
+{% endif %}

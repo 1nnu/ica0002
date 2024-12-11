@@ -12,11 +12,11 @@ zone "{{ domain }}" {
         {% endfor %}
     };
     {% endif %}
-    file "db.{{ company_name }}{{ root_zone }}";
+    file "db.{{ domain }}";
 };
 
 zone "168.192.in-addr.arpa" {
-    file "db.{{ company_name }}{{ root_zone }}.reverse";
+    file "db.{{ domain }}.reverse";
     {% if inventory_hostname in groups['dns_primary']%}
     type primary;
     allow-transfer { 127.0.0.1; key transfer.key;};

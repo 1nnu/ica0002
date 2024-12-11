@@ -16,44 +16,54 @@
   - name: Update APT cache
     ansible.builtin.apt:
       cache_valid_time: 86400
+
   - name: Install prometehus-node-exporter from APT
     ansible.builtin.apt:
       name: prometheus-node-exporter
+
   - ansible.builtin.service:
       name: prometheus-node-exporter
       state: started
       enabled: true
+
   - name: Install rsyslog
     ansible.builtin.apt:
       name: rsyslog
+
   - name: Start and enable rsyslog
     ansible.builtin.service:
       name: rsyslog
       state: started
       enabled: true
+
   - name: Copy rsyslog config
     ansible.builtin.template:
       src: 50-telegraf.conf.j2
       dest: /etc/rsyslog.d/50-telegraf.conf
     notify: restart rsyslog
+
   - name: Create backup user with RSA key
     ansible.builtin.user:
       name: backup
       home: /home/backup
       generate_ssh_key: true
       ssh_key_type: rsa
+
   - name: Add backup server public key to known hosts
     ansible.builtin.template:
       src: known_hosts.j2
       dest: /home/backup/.ssh/known_hosts
       group: backup
       owner: backup
+
   - name: Create directory restore dir for backup
     ansible.builtin.file:
       path: /home/backup/restore
       owner: backup
       group: backup
       state: directory
+
   - name: Install duplicity
     ansible.builtin.apt:
       name: duplicity
+

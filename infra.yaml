@@ -25,7 +25,7 @@
 
   - name: Prometheus + grafana
     hosts: prometheus_servers
-    roles:
+    roles:  
       - prometheus
       - grafana
       - nginx
