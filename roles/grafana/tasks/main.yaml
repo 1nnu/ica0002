@@ -45,6 +45,7 @@
     name: grafana
     published_ports: "{{ grafana_port }}:3000"
     volumes: /opt/grafana:/etc/grafana
+    restart_policy: unless-stopped
 
 - name: Add grafana CNAME records
   community.general.nsupdate:

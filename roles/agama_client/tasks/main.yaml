@@ -36,6 +36,6 @@
 
 - name: agama-client started
   ansible.builtin.service:
-    name: agama-client
+    name: "{{ agama_client_application }}"
     state: started
     enabled: true

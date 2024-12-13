@@ -1,23 +1,22 @@
-company_name: pingix
-root_zone: .ttu
 domain: pingix.ttu
 github_username: 1nnu
 node_exporter_port: 9100
 backup_server_ip: 192.168.42.132
 backup_server_name: "backup"
 backup_server_ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
-node_id: "{{ (ansible_port / 100) | int }}"
 allowed_networks:
  - 192.168.42.0/23
  - 127.0.0.0/8
  - 172.17.0.0/16
 uwsgi_socket: localhost:5000
 
-# MYSQL
+# MYSQL main
+
 mysql_backup_host: "{{ groups['db_servers'] | reject('eq', mysql_host) | first | default(mysql_host) }}"
 mysql_host: "{{ groups['db_servers'] | first}}"
 mysql_database: agama
 mysql_user: agama
+mysql_node_id: "{{ (ansible_port / 100) | int }}"
 mysql_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           34306430346239326261333433363665636465626536613432336437663139633035663132646133
@@ -58,6 +57,7 @@ mysql_replication_password: !vault |
           35316461316635663561356535343965383738386335373664346633333261316531
 
 # GRAFANA
+
 grafana_port: 3001
 grafana_user: 1nnu
 grafana_password: !vault |
@@ -79,7 +79,7 @@ agama_port: 8001
 influxdb_agama_db_name: agama
 influxdb_port: 8086
 
-# AGAMA APPLICATION
+# AGAMA APPLICATION CONTAINERS
 
 agama_docker_containers:
   agama1: 8001
@@ -90,6 +90,7 @@ agama_docker_containers:
 haproxy_stats_port: 9188
 
 # DNS
+
 dns_a_records:
   backup: 192.168.42.132
 

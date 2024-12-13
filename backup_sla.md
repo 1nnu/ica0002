@@ -21,7 +21,9 @@ MySQL backups are created every 24h; it takes up to 1 min to create and store th
 
 InfluxDB backups are created every 24h; it takes up to 1 min to create and store the backup.
 
-All backups are started automatically by 01:00 UTC+2.
+Ansible Git Repository are started automatically by 01:00 UTC+2.
+
+MySQL backups and InfluxDB backups are started automatically by 20:20 UTC+2.
 
 Backup RPO (recovery point objective) is:
  - 24h for MySQL
@@ -53,7 +55,7 @@ MySQL backups are verified every sunday by Innar Viinamäe.
 
 InfluxDB backups are verified every sunday by Innar Viinamäe.
 
-_____ backups are verified every _____ by _____.
+Ansible Git Repository backups are verified every sunday by Innar Viinamäe.
 
 
 ## Restore process
@@ -63,6 +65,6 @@ Service is recovered from the backup in case of an incident, and when service ca
 RTO (recovery time objective) is:
  - 5 min for MySQL
  - 5 min for InfluxDB
- - _____ for _____
+ - 10 min for Ansible Git Repository
 
 Detailed backup restore procedure is documented in the [backup_restore.md](./backup_restore.md).

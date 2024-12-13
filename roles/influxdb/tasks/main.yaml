@@ -62,7 +62,7 @@
     path: /home/backup/influxdb
     owner: backup
     state: directory
-    mode: 0400
+    mode: 0700
 
 - name: Copy cron schedule file
   ansible.builtin.template:
