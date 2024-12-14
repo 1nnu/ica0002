@@ -12,7 +12,6 @@ uwsgi_socket: localhost:5000
 
 # MYSQL main
 
-mysql_backup_host: "{{ groups['db_servers'] | reject('eq', mysql_host) | first | default(mysql_host) }}"
 mysql_host: "{{ groups['db_servers'] | first}}"
 mysql_database: agama
 mysql_user: agama
@@ -25,6 +24,7 @@ mysql_password: !vault |
           3636363465626330310a383066616163666336663166333235396664623231363539356563336365
           3537
 
+mysql_backup_host: "{{ groups['db_servers'] | reject('eq', mysql_host) | first | default(mysql_host) }}"
 backup_mysql_user: backup
 backup_mysql_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256

@@ -4,20 +4,24 @@
     gather_facts: true
     roles:
       - init
-    tags: i
+    tags: init
 
   - name: Dns server
+    gather_facts: true
     hosts: dns_servers
     roles:
       - bind
     tags: dns
   
   - name: Resolv
+    gather_facts: true
     hosts: all
     roles:
       - resolv
+    tags: resolv
 
   - name: Docker
+    gather_facts: true
     hosts: all
     roles:
       - docker
@@ -25,6 +29,7 @@
 
   - name: Prometheus + grafana
     hosts: prometheus_servers
+    gather_facts: true
     roles:  
       - prometheus
       - grafana
@@ -33,6 +38,7 @@
 
   - name: InfluxDb
     hosts: influxdb
+    gather_facts: true
     roles:
       - influxdb
       - agama_client
@@ -40,20 +46,24 @@
   
   - name: Database server
     hosts: db_servers
+    gather_facts: true
     roles:
       - mysql
     tags: mysql
 
   - name: Web server
     hosts: web_servers
+    gather_facts: true
     roles:
-      - agama
       - nginx
-    tags: web
-
-  - name: Keepalive and HAproxy
-    hosts: web_servers
-    roles:
       - keepalived
       - haproxy
-    tags: keep
+      - agama
+    tags: agama
+
+#  - name: Keepalive and HAproxy
+#    hosts: web_servers
+#    roles:
+#      - keepalived
+#      - haproxy
+#    tags: keep

@@ -30,14 +30,27 @@
     state: started
     enabled: true
 
+- name: Gather facts for the first dns_primary host
+  ansible.builtin.setup:
+  delegate_to: "{{ groups['dns_primary'][0] }}"
+  register: dns_primary_facts
+  no_log: true
+
+- name: Set server_ip variable to the IP of the first dns_primary host
+  ansible.builtin.set_fact:
+    primary_dns_server_ip: "{{ dns_primary_facts.ansible_facts.ansible_default_ipv4.address }}"
+  no_log: true
+
+
 - name: Add haproxy CNAME records
   community.general.nsupdate:
     key_name: "nsupdate.key"
     key_secret: "{{ dns_nsupdate_key }}"
     key_algorithm: "hmac-sha256"
     zone: "{{ domain }}"
-    server: "{{ hostvars[groups['dns_primary'][0]]['ansible_default_ipv4']['address'] }}"
+    server: "{{ primary_dns_server_ip }}"
     record: "lb-{{ inventory_hostname[-1] if groups['web_servers']|length - 1 else None }}"
     value: "{{ inventory_hostname }}"
     type: "CNAME"
+  delegate_to: "{{ groups['dns_primary'][0] }}"
   no_log: true

@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 2,
   "links": [],
   "panels": [
     {
@@ -75,12 +75,12 @@
                   {
                     "options": {
                       "1": {
-                        "index": 1,
-                        "text": "MASTER"
-                      },
-                      "2": {
                         "index": 0,
                         "text": "SLAVE"
+                      },
+                      "2": {
+                        "index": 1,
+                        "text": "MASTER"
                       }
                     },
                     "type": "value"
@@ -1040,6 +1040,6 @@
   "timezone": "browser",
   "title": "Main",
   "uid": "be1ps6tqvgwlcf",
-  "version": 6,
+  "version": 2,
   "weekStart": ""
 }

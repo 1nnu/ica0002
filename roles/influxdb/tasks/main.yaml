@@ -61,14 +61,27 @@
   ansible.builtin.file:
     path: /home/backup/influxdb
     owner: backup
+    group: backup
     state: directory
-    mode: 0700
+    mode: 0750
 
 - name: Copy cron schedule file
   ansible.builtin.template:
     src: influxdb-backup
     dest: /etc/cron.d/influxdb-backup
+    mode: 0644
   notify: restart cron
+
+- name: Gather facts for the first dns_primary host
+  ansible.builtin.setup:
+  delegate_to: "{{ groups['dns_primary'][0] }}"
+  register: dns_primary_facts
+  no_log: true
+
+- name: Set server_ip variable to the IP of the first dns_primary host
+  ansible.builtin.set_fact:
+    primary_dns_server_ip: "{{ dns_primary_facts.ansible_facts.ansible_default_ipv4.address }}"
+  no_log: true
   
 - name: Add influxdb CNAME records
   community.general.nsupdate:
@@ -76,7 +89,7 @@
     key_secret: "{{ dns_nsupdate_key }}"
     key_algorithm: "hmac-sha256"
     zone: "{{ domain }}"
-    server: "{{ hostvars[groups['dns_primary'][0]]['ansible_default_ipv4']['address'] }}"
+    server: "{{ primary_dns_server_ip }}"
     record: "influxdb{{ inventory_hostname[-1] if groups['prometheus_servers']|length - 1 else None }}"
     value: "{{ inventory_hostname }}"
     type: "CNAME"
