@@ -56,14 +56,12 @@
     gather_facts: true
     roles:
       - nginx
-      - keepalived
-      - haproxy
       - agama
     tags: agama
 
-#  - name: Keepalive and HAproxy
-#    hosts: web_servers
-#    roles:
-#      - keepalived
-#      - haproxy
-#    tags: keep
+  - name: Keepalive and HAproxy
+    hosts: web_servers
+    roles:
+      - keepalived
+      - haproxy
+    tags: keepalive

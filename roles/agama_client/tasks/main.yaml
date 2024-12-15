@@ -34,6 +34,7 @@
     dest: /etc/agama-client/{{ agama_client_application }}.conf
   notify: restart agama-client
 
+
 - name: agama-client started
   ansible.builtin.service:
     name: "{{ agama_client_application }}"

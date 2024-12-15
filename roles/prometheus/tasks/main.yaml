@@ -8,12 +8,14 @@
       src: default.prometheus.j2
       dest: /etc/default/prometheus
     notify: Restart Prometheus
+    no_log: true
 
   - name: Configure prometheus
     ansible.builtin.template:
       src: prometheus.yml.j2
       dest: /etc/prometheus/prometheus.yml
     notify: Restart Prometheus
+    no_log: true
 
   - ansible.builtin.service:
       name: prometheus

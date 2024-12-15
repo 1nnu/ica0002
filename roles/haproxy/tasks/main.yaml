@@ -7,6 +7,7 @@
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
   notify: Restart haproxy
+  no_log: true
 
 - name: Start and enable haproxy
   ansible.builtin.service:
@@ -23,6 +24,7 @@
     src: prometheus-haproxy-exporter.j2
     dest: /etc/default/prometheus-haproxy-exporter
   notify: Restart haproxy-exporter
+  no_log: true
 
 - name: Start and enable haproxy-exporter
   ansible.builtin.service:

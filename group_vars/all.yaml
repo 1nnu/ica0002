@@ -24,6 +24,8 @@ mysql_password: !vault |
           3636363465626330310a383066616163666336663166333235396664623231363539356563336365
           3537
 
+# MYSQL backup
+
 mysql_backup_host: "{{ groups['db_servers'] | reject('eq', mysql_host) | first | default(mysql_host) }}"
 backup_mysql_user: backup
 backup_mysql_password: !vault |

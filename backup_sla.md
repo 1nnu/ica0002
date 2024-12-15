@@ -17,9 +17,9 @@ Services that are backed up:
 
 Ansible Git Repository backups are created every 30 minutesh; it takes up to 5 seconds to create and store the backup.
 
-MySQL backups are created every 24h; it takes up to 1 min to create and store the backup.
+MySQL backups are created every 24h; it takes up to 3 min to create and store the backup.
 
-InfluxDB backups are created every 24h; it takes up to 1 min to create and store the backup.
+InfluxDB backups are created every 24h; it takes up to 3 min to create and store the backup.
 
 MySQL backups and InfluxDB backups are started automatically by 20:20 UTC+2.
 
@@ -42,9 +42,9 @@ Backup data from both servers will be synchronized to encrypted AWS S3 bucket in
 
 Ansible Git Repository backups are stored for 180 days; all versions (recovery points) are available to restore.
 
-InfluxDB backups are stored for 30 days; 29 versions are available to restore.
+InfluxDB backups are stored for until end of 2024 autumn semester (30. january 2025); all versions are available to restore.
 
-MySQL backups are stored for 30 days; 29 versions are available to restore.
+MySQL backups are stored for until end of 2024 autumn semester (30. january 2025); all versions are available to restore.
 
 
 ## Usability checks

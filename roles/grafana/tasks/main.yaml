@@ -38,6 +38,7 @@
     src: grafana.ini.j2
     dest: /opt/grafana/grafana.ini
   notify: Restart Grafana
+  no_log: true
 
 - name: Grafana Docker container
   community.docker.docker_container:

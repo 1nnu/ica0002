@@ -8,6 +8,7 @@
       src: override.cnf.j2
       dest: /etc/mysql/mysql.conf.d/override.cnf
     notify: Restart MySQL
+    no_log: true
 
   - name: Install PyMySql from APT
     ansible.builtin.apt:
@@ -34,6 +35,7 @@
       password: "{{ mysql_password }}"
       host: "%"
       priv: "{{ mysql_database }}.*:ALL"
+    no_log: true
 
   - name: Install mysql exporter
     ansible.builtin.apt:
@@ -74,8 +76,9 @@
     ansible.builtin.file:
       path: /home/backup/mysql
       owner: backup
+      group: backup
       state: directory
-      mode: 0400
+      mode: 0750
 
   - name: Create backup as database user
     community.mysql.mysql_user:
@@ -85,6 +88,7 @@
       host: "%"
       priv: "{{ mysql_database }}.*:LOCK TABLES,SELECT"
       state: present
+    no_log: true
 
   - name: Copy .my.cnf to /home/backup/.my.cnf
     ansible.builtin.template:
@@ -118,13 +122,24 @@
       - Reset MySQL source
       - Reset MySQL replica
   
+  - name: Gather facts for the first dns_primary host
+    ansible.builtin.setup:
+    delegate_to: "{{ groups['dns_primary'][0] }}"
+    register: dns_primary_facts
+    no_log: true
+
+  - name: Set server_ip variable to the IP of the first dns_primary host
+    ansible.builtin.set_fact:
+      primary_dns_server_ip: "{{ dns_primary_facts.ansible_facts.ansible_default_ipv4.address }}"
+    no_log: true
+  
   - name: Add mysql CNAME records
     community.general.nsupdate:
       key_name: "nsupdate.key"
       key_secret: "{{ dns_nsupdate_key }}"
       key_algorithm: "hmac-sha256"
       zone: "{{ domain }}"
-      server: "{{ hostvars[groups['dns_primary'][0]]['ansible_default_ipv4']['address'] }}"
+      server: "{{ primary_dns_server_ip }}"
       record: "db-{{ inventory_hostname[-1] if groups['db_servers']|length - 1 else None }}"
       value: "{{ inventory_hostname }}"
       type: "CNAME"

@@ -13,6 +13,7 @@
     src: keepalived.conf.j2
     dest: /etc/keepalived/keepalived.conf
   notify: Restart keepalived
+  no_log: true
 
 - name: Copy keepalived script file
   ansible.builtin.copy:

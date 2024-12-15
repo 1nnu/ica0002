@@ -1,6 +1,6 @@
-1nnu-1 ansible_host=193.40.156.67 ansible_port=39622 ansible_user=ubuntu
-1nnu-2 ansible_host=193.40.156.67 ansible_port=30822 ansible_user=ubuntu
-1nnu-3 ansible_host=193.40.156.67 ansible_port=40222 ansible_user=ubuntu
+1nnu-1 ansible_host=193.40.156.67 ansible_port=4322 ansible_user=ubuntu
+1nnu-2 ansible_host=193.40.156.67 ansible_port=13822 ansible_user=ubuntu
+1nnu-3 ansible_host=193.40.156.67 ansible_port=4022 ansible_user=ubuntu
 
 [db_servers]
 1nnu-1

@@ -8,11 +8,11 @@ Restore MySQL data from the backup:
 
     ssh ubuntu@193.40.156.67 -p <Port of host with MySQL master>
 
-    <Now on managed host>
+    <Now on managed host with MySQL master>
 
     sudo -i
     sudo -u backup duplicity --no-encryption restore rsync://1nnu@backup.pingix.ttu/mysql /home/backup/restore/mysql
-    sudo mysql agama < /home/backup/mysql/agama.sql
+    sudo mysql agama < /home/backup/restore/mysql/agama.sql
 
     <Backup should be successful, now to check>
 
@@ -34,3 +34,6 @@ Restore InfluxDB data from the backup:
 
     <Backup should be successful, now to check>
     influx -execute 'show databases'
+
+    <Post backup restoration>
+    service telegraf start
