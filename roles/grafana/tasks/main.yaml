@@ -48,24 +48,13 @@
     volumes: /opt/grafana:/etc/grafana
     restart_policy: unless-stopped
 
-- name: Gather facts for the first dns_primary host
-  ansible.builtin.setup:
-  delegate_to: "{{ groups['dns_primary'][0] }}"
-  register: dns_primary_facts
-  no_log: true
-
-- name: Set server_ip variable to the IP of the first dns_primary host
-  ansible.builtin.set_fact:
-    primary_dns_server_ip: "{{ dns_primary_facts.ansible_facts.ansible_default_ipv4.address }}"
-  no_log: true
-
 - name: Add grafana CNAME records
   community.general.nsupdate:
     key_name: "nsupdate.key"
     key_secret: "{{ dns_nsupdate_key }}"
     key_algorithm: "hmac-sha256"
     zone: "{{ domain }}"
-    server: "{{ primary_dns_server_ip }}"
+    server: "{{ hostvars[groups['dns_primary'][0]]['ansible_default_ipv4']['address'] }}"
     record: "grafana{{ inventory_hostname[-1] if groups['prometheus_servers']|length - 1 else None }}"
     value: "{{ inventory_hostname }}"
     type: "CNAME"
