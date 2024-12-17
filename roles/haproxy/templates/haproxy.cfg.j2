@@ -40,8 +40,8 @@ frontend my_ha_frontend
 backend my_ha_backend
     {% set ns = namespace(index = 1) %}
     {% for machine in groups['web_servers']%}{% for container in agama_docker_containers%}
-    server {{ container }}-{{ ns.index }} {{ machine}}:{{ agama_docker_containers[container] }} check
-    {% set ns.index = ns.index + 1 %}
+    server {{ container }}-{{ ns.index }} www-{{ machine.split('-')[-1] }}:{{ agama_docker_containers[container] }} check
+    {% set ns.index = ns.index + 1 %}   
     {%endfor%}{%endfor%}
 
 listen stats

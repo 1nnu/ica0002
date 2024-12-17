@@ -85,7 +85,7 @@
       login_unix_socket: /var/run/mysqld/mysqld.sock
       name: "{{ backup_mysql_user }}"
       password: "{{ backup_mysql_password }}"
-      host: "%"
+      host: "localhost"
       priv: "{{ mysql_database }}.*:LOCK TABLES,SELECT"
       state: present
     no_log: true
